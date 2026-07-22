@@ -1,12 +1,12 @@
 # Makefile for sysres on Mac [8-Jun-2023]
 
 CC = gcc
-CFLAGS = -O2 -Wall -DALSA -DANSI_C -Dlinux -I/usr/X11/include \
+CFLAGS = -O2 -Wall -DALSA -DANSI_C -Dlinux -I/opt/X11/include \
          -I/usr/local/include
 BIN=$(ROOT)/usr/local/bin
 LFLAGS=-framework CoreServices  -framework CoreAudio \
 	-framework AudioUnit -framework AudioToolbox \
-	-L/usr/X11R6/lib  -L/usr/local/lib
+	-L/opt/X11/lib  -L/usr/local/lib
 OFILES=sysres.o gui.o display.o help.o gr_disp.o gr_con.o gr_xw.o \
     print.o rwfile.o calibr.o kb.o wrtnfo.o \
     fft.o simp.o dp.o average.o clip.o rwcfg.o expfit.o  eval.o
