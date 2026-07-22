@@ -1,0 +1,74 @@
+# Makefile for SYSRES using MinGW compiler
+
+CC=gcc
+CFLAGS=-O2 -Wall -DMGW -I../include
+LFLAGS=-Lc:/usr/lib
+WINLIB = -lwinmm -lkernel32 -luser32 -lgdi32 
+LIBS = -lfft -lm $(WINLIB) 
+OFILES=sysres.o gui.o display.o help.o gr_disp.o gr_w32.o rwfile.o \
+    print.o calibr.o fft.o dp.o simp.o wrtnfo.o \
+    average.o clip.o rwcfg.o expfit.o eval.o 
+BIN=c:\usr\bin
+
+all : sysres.exe
+
+sysres.exe : $(OFILES)
+	$(CC) $(LFLAGS) -o sysres $(OFILES) -larsc $(LIBS)
+
+install : sysres.exe
+	cp -f sysres.exe $(BIN)
+
+clean :
+	rm -f *.bak *.o *.obj *.out *.pdb *.log *.exe *.bin sysres
+	rm -f *.res *.dll *.lib *.exp *~
+
+sysres.zip: sysres.exe
+	rm -rf sysres.zip
+	zip sysres readme.txt sysres.exe
+	zip sysres caltone.lst tp.lst tstcal.lst tstlat.lst
+
+sysressc.zip:
+	rm -rf sysressc.zip
+	zip sysressc configure configure.bat
+	zip sysressc *.mgw *.lnx *.mac
+	zip sysressc *.h *.c *.asm *.txt *.lst
+	zip sysressc dpef.lst dpstim.lst test.lst dpenv.m
+	zip sysressc sysres.rc sysres.ico 
+	zip sysressc VS9/*.sln VS9/*.vcproj VS9/readme.txt
+	zip sysressc sysres.iss sysres.spec version.pl
+
+version:
+	perl version.pl
+
+sysres-setup.zip: version VS9/Release/asysres.exe
+	../setup/iscc.exe sysres.iss
+	zip -j sysres-setup Output/setup.exe VS9/readme.txt
+	rm -rf Output
+
+sysres-demo.zip:
+	rm -rf sysres-demo.zip
+	zip -r sysres-demo demo
+
+zipexe: sysres.zip
+zipsrc: sysressc.zip
+setup: sysres-setup.zip
+demo: sysres-demo.zip
+
+dist: zipsrc zipexe setup demo
+	cp -f sysres.zip ../dist
+	cp -f sysressc.zip ../dist
+	cp -f sysres-setup.zip ../dist
+	cp -f sysres-demo.zip ../dist
+	rm -f *.zip
+
+# (makedep will replace everything after this line) 
+
+average.o: sysres.h display.h
+calibr.o: display.h sysres.h
+display.o: display.h
+dp.o: display.h
+gui.o: display.h version.h sysres.h
+help.o: version.h
+rwfile.o: display.h uni.h
+sysres.o: display.h version.h sysres.h uni.h
+

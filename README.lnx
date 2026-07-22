@@ -1,0 +1,27 @@
+SYSRES for Linux:
+
+Install SYSRES by copying the executable file "sysres" to /usr/local/bin.
+
+SYSRES uses the X window system to provide a graphical user interface
+under Linux and the ARSC library to access the soundcard.  ARSC assumes
+the presence of an ALSA driver the soundcard.
+
+SYSRES has been tested with several version of Linux including Mandriva
+2008.0 through 2010.2.
+
+The Linux version of SYSRES has been used with Echo soundcards, including
+Indigo IO, Gina3G, and Layla3G, but should also work with other soundcards
+that have ALSA drivers and can synchronize input/output.
+
+Sequences of SYSRES commands may be excuted from files. The following
+examples of SYSRES scripts are included in this distribution:
+
+  caltone.lst - generate a 1 volt rms tone for calibration
+  tp.lst      - measure distortion with tone pair
+  tstcal.lst  - test calibration by with 80 dB SPL tone
+  tstlat.lst  - test stability of soundcard loopback latency
+
+SYSRES documentation is online at http://audres.org/sysres/.
+The precompiled Linux version of SYSRES is online at
+http://audres.org/sysres-linux.zip.
+

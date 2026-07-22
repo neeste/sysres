@@ -1,0 +1,71 @@
+# Makefile for SYSRES under Linux
+
+CFLAGS=-Wall
+LFLAGS=-L/usr/X11R6/lib
+OFILES=sysres.o gui.o display.o help.o gr_disp.o gr_con.o gr_xw.o \
+    print.o rwfile.o calibr.o kb.o wrtnfo.o \
+    fft.o simp.o dp.o average.o clip.o rwcfg.o expfit.o  eval.o
+LIBS = -larsc -lasound -lfft -lX11 -lm
+DIST_FILES=sysres readme.txt msnd.cfg pincfg.txt
+BIN=$(ROOT)/usr/local/bin
+
+all: sysres
+
+sysres : $(OFILES)
+	gcc -o sysres $(LFLAGS) $(OFILES) $(LIBS)
+
+install: sysres
+	mkdir -p $(BIN)
+	install sysres $(BIN)
+
+clean:
+	rm -f *.bak *.o *.obj *.out *.pdb *.log *.exe *.bin sysres
+	rm -f *.res *.dll *.lib *.exp *~
+
+version:
+	perl version.pl
+
+www:
+	rm -f sysressc.zip
+	wget http://audres.org/downloads/sysressc.zip
+	unzip -o sysressc.zip
+	sh configure
+	make clean
+	make
+	sudo make install
+	make clean
+
+zipsrc: version
+	rm -rf sysressc.zip
+	zip sysressc configure configure.bat
+	zip sysressc *.djc *.lnx *.mac
+	zip sysressc *.h *.c *.asm *.txt *.lst 
+	zip sysressc dpef.lst dpstim.lst test.lst dpenv.m
+	zip sysressc sysres.rc sysres.ico 
+	zip sysressc VS16/*.sln VS16/*.vcxproj VS16/*.filters VS16/readme.txt
+	zip sysressc sysres.iss sysres.spec version.pl
+
+zipexe: sysres
+	rm -rf sysres-linux.zip
+	zip sysres-linux README.lnx sysres
+	zip sysres-linux caltone.lst tp.lst tstcal.lst tstlat.lst
+
+dist: zipsrc zipexe
+	cp -f sysres-linux.zip ../dist
+	cp -f sysressc.zip ../dist
+	rm -f *.zip
+
+# (makedep will replace everything after this line) 
+
+average.o: sysres.h display.h sio.h
+calibr.o: display.h sysres.h
+display.o: display.h
+dp.o: display.h
+dsp1.o: tstm.h
+dsp2.o: tstp.h
+gui.o: display.h version.h sysres.h sio.h
+help.o: version.h
+rwcfg.o: display.h version.h sysres.h sio.h
+rwfile.o: display.h uni.h
+sio.o: sio.h
+sysres.o: display.h version.h sysres.h sio.h uni.h

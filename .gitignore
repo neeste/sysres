@@ -1,0 +1,5 @@
+*.o
+sysres
+sysres-NERH134677
+VS16/
+*.lst

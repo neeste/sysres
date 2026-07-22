@@ -1,0 +1,14 @@
+                 Sysres Calibration Procedure
+
+
+Procedure for determining values for soundcard "full scale voltage" parameters:
+
+(1) Configure SYSRES to generate a 1-volt (rms) tone by setting vo=1.4142 and ns=8000. Use the ft command to output the tone. Connect an RMS voltmeter to the output of the souncard and measure the actual voltage. Multiply the current output full-scale voltage (FSV) paramter value by the voltmeter reading to obtain a new FSV value.
+
+(2) Connect the output of the soundcard to its input. In this "loopback" configuration, tell SYSRES to generate a 1-volt (rms) tone, as above. Observe the time response in SYSRES and note the measured RMS voltage. Divide the current input full-scale voltage (FSV) paramter value by the measured RMS voltage to obtain a new FSV value.
+
+(3) If desired, repeat steps 1 & 2 on the second channel by setting da=2 and ad=2.
+
+(4) Covert the output and input FSV values to millivolts and convert that number to hexidecimal. Create a default sysres.reg file using the wreg command in SYSRESand edit the file to have the correct "mv_fs" value. Double-click on this file to set these values into the Windows registry. 
+
+[STN 8-Jul-05]

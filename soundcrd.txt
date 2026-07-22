@@ -1,0 +1,32 @@
+Soundcard configuration tips
+
+========================================================================
+
+Windows driver settings for CardDeluxe [STN 31-Mar-01]:
+
+(1) In the CardDeluxe Device properties, under the Configuration tab,
+set the "Record mode" to "lock to playback" and check to see that the 
+"24-bit mode" is set to "left".
+
+(2) Under the Monitor tab, select only Analog output in the Analog Output 
+mixer section.
+
+========================================================================
+
+Windows (2K or XP) driver settings for Gina24 [STN 30-Oct-03]:
+
+(1) In the Echo console settings, select "Synchronize wave devices".
+
+(2) In the "Advanced" section of settings, select "PureWave" (PW).
+
+========================================================================
+
+Windows (2K or XP) driver tips for Indigo io [STN 26-Apr-04]:
+
+(1) WDM driver dated earlier than Dec-2003 had sych problems.
+
+(2) In Echo console settings, select "Synchronize wave devices".
+
+(3) In Echo console mixer, mute "Analog Input".
+
+========================================================================

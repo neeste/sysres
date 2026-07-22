@@ -1,0 +1,13 @@
+# configure SYSRES source code for Linux or Mac
+if (test `uname` == "Darwin"); then
+    echo "Configure SYSRES for Mac.";
+    rm -f Makefile
+    cp -f makefile.mac Makefile
+    echo "Type 'make', then 'sudo make install'."
+else
+    echo "Configure SYSRES for Linux.";
+    rm -f Makefile
+    cp -f makefile.lnx Makefile
+    echo "Type 'make', then 'sudo make install'."
+fi
+

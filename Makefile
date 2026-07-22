@@ -1,0 +1,70 @@
+# Makefile for sysres on Mac [8-Jun-2023]
+
+CC = gcc
+CFLAGS = -O2 -Wall -DALSA -DANSI_C -Dlinux -I/usr/X11/include \
+         -I/usr/local/include
+BIN=$(ROOT)/usr/local/bin
+LFLAGS=-framework CoreServices  -framework CoreAudio \
+	-framework AudioUnit -framework AudioToolbox \
+	-L/usr/X11R6/lib  -L/usr/local/lib
+OFILES=sysres.o gui.o display.o help.o gr_disp.o gr_con.o gr_xw.o \
+    print.o rwfile.o calibr.o kb.o wrtnfo.o \
+    fft.o simp.o dp.o average.o clip.o rwcfg.o expfit.o  eval.o
+LIBS = -lsio -lfft -lX11 -lm
+DIST_FILES=sysres readme.txt msnd.cfg pincfg.txt
+
+all: sysres
+
+sysres : $(OFILES)
+	$(CC) -o sysres $(LFLAGS) $(OFILES) $(LIBS)
+
+install: sysres
+	mkdir -p $(BIN)
+	install sysres $(BIN)
+
+clean:
+	rm -f *.bak *.o *.obj *.out *.pdb *.log *.exe *.bin sysres
+	rm -f *.res *.dll *.lib *.exp *~
+
+
+version:
+	perl version.pl
+
+zipdem:
+	rm -rf sysres.zip
+	zip sysres readme.txt sysres.exe
+	zip sysres caltone.lst tp.lst tstcal.lst 
+
+zipsrc: version
+	zip sysressc configure configure.bat
+	zip sysressc makefile.djc makefile.lnx makefile.mac
+	zip sysressc *.h *.c *.asm *.txt *.lst
+	zip sysressc dpef.lst dpstim.lst test.lst dpenv.m
+	zip sysressc sysres.rc sysres.ico 
+	zip sysressc VS16/*.sln VS16/*.vcproj VS16/readme.txt
+	zip sysressc sysres.iss sysres.spec version.pl
+
+zipexe: sysres
+	rm -rf sysres-linux.zip
+	zip sysres-linux README.lnx sysres
+	zip sysres-linux caltone.lst tp.lst tstcal.lst tstlat.lst
+
+dist: zipsrc zipexe
+	cp -f sysres-linux.zip ../dist
+	cp -f sysressc.zip ../dist
+	rm -f *.zip
+
+# (makedep will replace everything after this line) 
+
+average.o: sysres.h display.h sio.h
+calibr.o: display.h sysres.h
+display.o: display.h
+dp.o: display.h
+dsp1.o: tstm.h
+dsp2.o: tstp.h
+gui.o: display.h version.h sysres.h sio.h
+help.o: version.h
+rwcfg.o: display.h version.h sysres.h sio.h
+rwfile.o: display.h uni.h
+sio.o: sio.h
+sysres.o: display.h version.h sysres.h sio.h uni.h
