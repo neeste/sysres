@@ -1,5 +1,8 @@
 *.o
 sysres
 sysres-NERH134677
-VS16/
 *.lst
+VS16/Debug/
+VS16/Release/
+VS16/.vs/
+VS16/*.user
